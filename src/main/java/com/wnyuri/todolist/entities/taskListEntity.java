@@ -1,5 +1,6 @@
 package com.wnyuri.todolist.entities;
 
+import com.wnyuri.todolist.dto.taskListDTO;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -19,12 +20,10 @@ public class taskListEntity {
     @OneToMany(mappedBy = "taskList", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<taskEntity> tasks = new ArrayList<>();
 
-    public taskListEntity() {}
+    public taskListEntity() { this.created = LocalDateTime.now(); }
 
     public taskListEntity(long id, List<taskEntity> tasks) {
-        this.id = id;
-        this.tasks = tasks;
-        this.created = LocalDateTime.now();
+        this.tasks = new ArrayList<>();
     }
 
     public long getId() {
@@ -42,5 +41,9 @@ public class taskListEntity {
 
     public void setTasks(List<taskEntity> tasks) {
         this.tasks = tasks;
+    }
+
+    public taskListDTO toDTO(){
+        return new taskListDTO(this.id, this.created);
     }
 }
