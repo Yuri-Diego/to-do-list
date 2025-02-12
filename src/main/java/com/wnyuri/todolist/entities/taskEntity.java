@@ -22,11 +22,11 @@ public class taskEntity {
 
     public taskEntity() {}
 
-    public taskEntity(int id, String title, String description, boolean done, taskListEntity taskList) {
+    public taskEntity(int id, String title, String description, taskListEntity taskList) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.done = done;
+        this.done = false;
         this.taskList = taskList;
     }
 
