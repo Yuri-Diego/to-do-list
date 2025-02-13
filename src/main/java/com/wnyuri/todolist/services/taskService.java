@@ -1,8 +1,11 @@
 package com.wnyuri.todolist.services;
 
+import com.wnyuri.todolist.dto.taskCreateDTO;
 import com.wnyuri.todolist.dto.taskDTO;
 import com.wnyuri.todolist.entities.taskEntity;
+import com.wnyuri.todolist.entities.taskListEntity;
 import com.wnyuri.todolist.repositories.taskRepository;
+import com.wnyuri.todolist.repositories.taskListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +17,9 @@ public class taskService {
 
     @Autowired
     private taskRepository taskRepository;
+
+    @Autowired
+    private taskListRepository taskListRepository;
 
     @Transactional(readOnly = true)
     public taskDTO getTaskById(Long id) {
@@ -27,12 +33,17 @@ public class taskService {
     }
 
     @Transactional
-    public taskDTO createTask(taskDTO taskDTO) {
-        taskEntity task = new taskEntity();
-        task.setTitle(taskDTO.title());
-        task.setDescription(taskDTO.description());
-        task = taskRepository.save(task);
+    public taskCreateDTO createTask(taskCreateDTO newTask) {
+        taskListEntity taskList = taskListRepository.findById(newTask.taskListId())
+                .orElseThrow(() -> new RuntimeException("Task list não encontrada"));
 
-        return task.toDTO();
+        taskEntity task = new taskEntity();
+        task.setTitle(newTask.title());
+        task.setDescription(newTask.description());
+        task.setDone(newTask.done());
+        task.setTaskList(taskList);
+
+        taskRepository.save(task);
+        return task.toCreateDTO();
     }
 }

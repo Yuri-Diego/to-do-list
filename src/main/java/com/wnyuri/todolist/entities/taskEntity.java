@@ -1,5 +1,6 @@
 package com.wnyuri.todolist.entities;
 
+import com.wnyuri.todolist.dto.taskCreateDTO;
 import com.wnyuri.todolist.dto.taskDTO;
 import jakarta.persistence.*;
 
@@ -68,5 +69,9 @@ public class taskEntity {
 
     public taskDTO toDTO() {
         return new taskDTO(this.title, this.description, this.done);
+    }
+
+    public taskCreateDTO toCreateDTO() {
+        return new taskCreateDTO(this.title, this.description, this.done, this.taskList.getId());
     }
 }

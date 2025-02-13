@@ -23,6 +23,7 @@ public class taskListEntity {
     public taskListEntity() { this.created = LocalDateTime.now(); }
 
     public taskListEntity(long id, List<taskEntity> tasks) {
+        this.id = id;
         this.tasks = new ArrayList<>();
     }
 
