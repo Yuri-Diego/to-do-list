@@ -19,17 +19,26 @@ public class taskListService {
     @Autowired
     private taskListRepository taskListRepository;
 
+    @Transactional(readOnly = true)
     public List<taskListDTO> getAllTaskLists() {
         List<taskListDTO> taskListDTOS = new ArrayList<>();
         taskListRepository.findAll().forEach(taskList -> {taskListDTOS.add(taskList.toDTO());});
         return taskListDTOS;
     }
 
+    @Transactional
     public taskListDTO createTaskList() {
         taskListEntity taskList = new taskListEntity();
         taskList = taskListRepository.save(taskList);
 
         return taskList.toDTO();
+    }
+
+    @Transactional
+    public taskListDTO deleteTaskList(Long taskListId) {
+        taskListEntity deletedTaskList = taskListRepository.getById(taskListId);
+        taskListRepository.deleteById(taskListId);
+        return deletedTaskList.toDTO();
     }
 
 }
